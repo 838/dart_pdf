@@ -202,11 +202,18 @@ class FixedAxis<T extends num> extends GridAxis {
     final start = crossAxisPosition + _marginStart;
     switch (direction) {
       case Axis.horizontal:
-        return box!.left +
+        final value = box!.left +
             start +
             (box!.width - start - _marginEnd) *
                 (transfer(input!) - offset) /
                 total;
+
+        if (value.isNaN) {
+          return _marginStart;
+        }
+
+        return value;
+
       case Axis.vertical:
         return box!.bottom +
             start +
